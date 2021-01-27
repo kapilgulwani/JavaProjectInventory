@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.psl.training.billGeneration.BillGenerator;
 import com.psl.training.connections.ConnectionUtil;
 import com.psl.training.model.Customer;
 import com.psl.training.model.OrderItem;
@@ -90,7 +91,9 @@ public static void main(String[] args) {
 			totalPrice+=orderedItem.getTotal();
 		}
 		label+="\n Total Bill of Order :"+totalPrice;
-		System.out.println(label);
+	//	System.out.println(label);
+		BillGenerator bg = new BillGenerator();
+        bg.generateBill(label, name);
 	sc.close();	
 	}
 }
