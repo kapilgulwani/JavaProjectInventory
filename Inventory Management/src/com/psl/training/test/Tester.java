@@ -18,8 +18,9 @@ public class Tester {
 	StockItem stockItems[]=new StockItem[20];
 	PurchaseOrder[] po=new PurchaseOrder[20];
 	Customer customers[]=new Customer[20];
-	
+	static Scanner sc = new Scanner(System.in);
 public Tester(Connection cn) {
+	
 	initCustomers(cn);
 	initStock(cn); // initialize stock
 	createPurchaseOrders(cn);
@@ -41,19 +42,20 @@ public static void main(String[] args) {
 		System.out.println("Not Connected");
 	}
 	
-	for (PurchaseOrder purchaseOrder : test.getPurchaseOrder(1,2)) {
-	System.out.println(purchaseOrder);
-}
+//	for (PurchaseOrder purchaseOrder : test.getPurchaseOrder(1,2)) {
+//	System.out.println(purchaseOrder);
+//}
 	
 	System.out.println("Enter Name of customer to place order :");
-	Scanner sc = new Scanner(System.in);
+//	Scanner sc = new Scanner(System.in);
 	String name = sc.nextLine();
 	System.out.println(" placing Order for "+name);
-	Customer customer1=test.placeOrder(name,1,2);
-	System.out.println(" Orders of " + name);
-	for (PurchaseOrder po : customer1.getPo()) {
-		System.out.println(po);
-	}
+//	Customer customer1= test.placeOrder(name, 1, 2);
+//	System.out.println(" Orders of " + name);
+	
+//	for (PurchaseOrder po : customer1.getPo()) {
+//		System.out.println(po);
+//	}
 	
 	/*System.out.println(" placing Order for Bill");
 	Customer customer2=test.placeOrder("Bill", 3);
@@ -77,7 +79,7 @@ public static void main(String[] args) {
 	for (PurchaseOrder po : test.po) {
 		totalPrice=0;
 		String label="--------------------------------------";
-		label+="\n Order No :"+po.getPoNumber();
+//		label+="\n Order No :"+po.getPoNumber();
 		label+="\n Ordered Date : "+po.getOrderDate();
 		po.setShipDate(po.getOrderDate().plusDays(1));
 		label+="\n shipped on :"+po.getShipDate();
@@ -94,7 +96,7 @@ public static void main(String[] args) {
 }
 // u can add this method in CustomerService / util class
 public void initCustomers(Connection cn){
-	Scanner sc = new Scanner(System.in);
+//	Scanner sc = new Scanner(System.in);
 	int i=0;
 	while(true)
 	{
@@ -119,6 +121,7 @@ public void initCustomers(Connection cn){
 		
 		System.out.println("Enter Zip: ");
 		String zip = sc.nextLine();
+		
 		
 		try {
 
@@ -159,13 +162,14 @@ public void initCustomers(Connection cn){
 	//return customers;
 	
 	System.out.println("End customer");
-	sc.close();
+//	sc.close();
 }
 
 public void createPurchaseOrders(Connection cn){
 
 	// 1.	PO 1 - 2 gallons Milk, 2 lbs Chicken and 12 eggs.
-	Scanner sc = new Scanner(System.in);
+	
+	
 	int stock_id=0,quantity;
 	System.out.println("Enter No of Purchase Order : ");
 	int purchase = sc.nextInt();
@@ -190,12 +194,12 @@ public void createPurchaseOrders(Connection cn){
 			sc.nextLine();
 			
 			StockItem stockItem=getStockItemByName(stock_id);
-			long total=(long) (quantity*stockItem.getPrice());
+			int total= (int)(quantity*stockItem.getPrice());
 			orderItems[i]=new OrderItem(stockItem,quantity,total );
 			
 			
 				
-				PreparedStatement	pstmt = cn.prepareStatement("insert into order_item values(?,?,?)");
+				PreparedStatement pstmt = cn.prepareStatement("insert into order_item values(?,?,?)");
 				
 				pstmt.setInt(1,stock_id);
 				pstmt.setInt(2,quantity);
@@ -210,7 +214,7 @@ public void createPurchaseOrders(Connection cn){
 			}
 			
 		}
-		po[j] =new PurchaseOrder(j, LocalDate.now(),LocalDate.now().plus(2,null), orderItems);
+		po[j] =new PurchaseOrder(j, LocalDate.now(),LocalDate.now(), orderItems);
 	}
 	
 
@@ -264,24 +268,25 @@ public StockItem getStockItemByName(int stockItemId){
 public void initStock(Connection cn){
 	//2.	Create 5 items - Milk, Chicken, Egg, Apple and Orange
 	int i=0,id=0;
-	Scanner sc1 = new Scanner(System.in);
+//	Scanner sc1 = new Scanner(System.in);
 	while(true)
 	{
 
 		try {
 		System.out.println("Enter Stock id: ");
-		id = sc1.nextInt();
+		id = sc.nextInt();
+		sc.nextLine();
 		
 		System.out.println("Enter Stock Description :");
-		String desc = sc1.nextLine();
+		String desc = sc.nextLine();
 		
 		System.out.println("Enter Stock Price :");
-		double price = sc1.nextDouble();
-		sc1.nextLine();
+		double price = sc.nextDouble();
+		sc.nextLine();
 		
 		System.out.println("Enter Stock Quantity :");
-		int quantity = sc1.nextInt();
-		sc1.nextLine();
+		int quantity = sc.nextInt();
+		sc.nextLine();
 		
 
 			stockItems[i]=new StockItem(id,desc,price,quantity);
@@ -300,9 +305,9 @@ public void initStock(Connection cn){
 			e1.printStackTrace();
 		}
 		
-		System.out.println("Do you want to conti..Y/N");
-		String response = sc1.nextLine();
-		sc1.next();
+		System.out.println("Do you want to continue..Y/N");
+		String response = sc.nextLine();
+		sc.next();
 		System.out.println(response);
 		if(response.equals("No"))
 		{
@@ -312,7 +317,7 @@ public void initStock(Connection cn){
 	
 	
 	//return stockItems;
-	sc1.close();
+//	sc.close();
 }
 Customer getCustomerByName(String custName){
 	for (Customer customer : customers) {
@@ -325,11 +330,11 @@ Customer getCustomerByName(String custName){
 PurchaseOrder[] getPurchaseOrder(int... orderNo){
 	PurchaseOrder orders[]=new PurchaseOrder[orderNo.length];
 	int index=0;
-	for(int ono:orderNo)
+	for(int ono : orderNo)
 	{
 		for (PurchaseOrder po : this.po) {
-		
-			if(po.getPoNumber()==ono)
+			System.out.println(po.getPoNumber());
+			if(po.getPoNumber()== ono)
 				orders[index++]=po;
 		}
 			
@@ -337,10 +342,9 @@ PurchaseOrder[] getPurchaseOrder(int... orderNo){
 	return orders;
 }
 
-public Customer placeOrder(String customerName,int... orderNo){
-	 
-	Customer c=getCustomerByName(customerName);
-	PurchaseOrder[] po=getPurchaseOrder(orderNo);
+public Customer placeOrder(String customerName, int...orderNo ){
+	Customer c = getCustomerByName(customerName);
+	PurchaseOrder[] po = getPurchaseOrder(orderNo);
 	c.setPo(po);
 	return c;
 }

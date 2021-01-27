@@ -10,7 +10,7 @@ private String state;
 private String street;
 private String zip;
 private String cell_phone;
-private PurchaseOrder po[]=new PurchaseOrder[5];
+private PurchaseOrder po[]= new PurchaseOrder[5];
 
 public Customer() {
 	// TODO Auto-generated constructor stub
